@@ -81,7 +81,7 @@ def get_summary(commodity:str):
         info ={
             "year":int(row[0]), #cause apparently postgres gives a float as year and month 
             "month":int(row[1]),
-            "average":float(row[2])
+            "avg":float(row[2])
         }
         details.append(info)
     return details
