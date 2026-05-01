@@ -29,7 +29,7 @@ function CommoditySelector({ onSelect, selected }) {
                 value={selected}
                 onChange={e => onSelect(e.target.value)}
             >
-                <option value="">-- Select --</option>
+                <option value="">Select</option>
                 {commodities.map(c => (
                     <option key={c.name} value={c.name}>
                         {c.name} ({c.category})
