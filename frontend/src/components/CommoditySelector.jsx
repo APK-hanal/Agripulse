@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react"
 import { getCommodities } from "../api"
 
-function CommoditySelector({ onSelect, selected }) {
+function CommoditySelector({ onSelect, selected, onReady }) {
     const [commodities, setCommodities] = useState([])
     const [search, setSearch] = useState("")
     const [loading, setLoading] = useState(true)
@@ -14,13 +14,14 @@ function CommoditySelector({ onSelect, selected }) {
             .then(data => {
                 setCommodities(data)
                 setLoading(false)
+                onReady()
             })
             .catch(err => {
                 setError(err.message)
                 setLoading(false)
+                onReady()
             })
     }, [])
-
     //Close dropdown when clicking outside
     useEffect(() => {
         function handleClickOutside(e) {
