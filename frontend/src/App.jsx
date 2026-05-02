@@ -1,6 +1,7 @@
 import { useState } from "react";
 import CommoditySelector  from "./components/CommoditySelector";
 import PriceTrendChart from "./components/PriceTrendChart";
+import SeasonalityChart from "./components/SeasonalityChart";
 
 function App(){
     const [selectedComm, setComm] = useState("")
@@ -14,6 +15,7 @@ function App(){
             {selectedComm && (
                 <>
                     <PriceTrendChart commodity={selectedComm}/>
+                    <SeasonalityChart commodity={selectedComm}/>
                     </>
 
             )}
