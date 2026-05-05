@@ -1,10 +1,11 @@
 import pandas as pd
 import re
 
-df = pd.read_csv('data/weekly_prices.csv')
-
-# Clean column names
-df.columns = df.columns.str.strip()
+def read_db():
+    df = pd.read_csv('data/weekly_prices.csv')
+    # Clean column names
+    df.columns = df.columns.str.strip()
+    return df
 
 def parse_commodity(name):
     """
@@ -47,21 +48,26 @@ def parse_commodity(name):
         'location':      location,
     })
 
-# Parse the commodity column
-parsed = df['Commodity'].apply(parse_commodity)
+def save_parsed(df):
+    # Parse the commodity column
+    parsed = df['Commodity'].apply(parse_commodity)
 
-# Build final dataframe
-result = pd.DataFrame({
-    'name_original': parsed['name_original'],
-    'name':          parsed['name'],
-    'type':          parsed['type'],
-    'color':         parsed['color'],
-    'location':      parsed['location'],
-    'date':          pd.to_datetime(df['Date']).dt.strftime('%Y-%m-%d'),
-    'unit':          df['Unit'].str.lower().str.strip(),
-    'maximum':       df['Maximum value'],
-    'minimum':       df['Minimum value'],
-    'average':       df['Average'],
-})
+    # Build final dataframe
+    result = pd.DataFrame({
+        'name_original': parsed['name_original'],
+        'name':          parsed['name'],
+        'type':          parsed['type'],
+        'color':         parsed['color'],
+        'location':      parsed['location'],
+        'date':          pd.to_datetime(df['Date']).dt.strftime('%Y-%m-%d'),
+        'unit':          df['Unit'].str.lower().str.strip(),
+        'maximum':       df['Maximum value'],
+        'minimum':       df['Minimum value'],
+        'average':       df['Average'],
+    })
 
-result.to_csv('data/parsed_prices.csv', index=False)
+    result.to_csv('data/parsed_prices.csv', index=False)
+
+if __name__ == "__main__":
+    df=read_db()
+    save_parsed(df)
