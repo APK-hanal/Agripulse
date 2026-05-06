@@ -86,3 +86,25 @@ def get_summary(commodity:str):
         details.append(info)
     return details
     
+# last week
+@router.get("/prices/{commodity}/recent")
+def get_recent(commodity: str):
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT "date", min_price, max_price, avg_price
+        FROM prices_aggregated
+        WHERE commodity = %s
+        AND "date" >= (SELECT MAX("date") FROM prices_aggregated WHERE commodity = %s) - INTERVAL '7 days'
+        ORDER BY "date"
+    """, [commodity, commodity])
+    rows = cur.fetchall()
+    cur.close()
+    conn.close()
+    if not rows:
+        raise HTTPException(status_code=404, detail="No recent data found")
+    data = []
+    for row in rows:
+        datuh = {"date": str(row[0]), "min": row[1], "max": row[2], "average": row[3]}
+        data.append(datuh)
+    return data
