@@ -22,3 +22,9 @@ export async function getSummary(commodity) {
     if (!res.ok) throw new Error("Failed to fetch summary")
     return res.json()
 }
+
+export async function getRecentPrices(commodity) {
+    const res = await fetch(`${BASE_URL}/prices/${commodity}/recent`)
+    if (!res.ok) throw new Error("Failed to fetch recent prices")
+    return res.json()
+}
